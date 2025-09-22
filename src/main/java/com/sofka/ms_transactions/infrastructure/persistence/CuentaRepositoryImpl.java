@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static org.springframework.data.relational.core.query.Update.update;
+
 @Repository
 @RequiredArgsConstructor
 @Slf4j
@@ -24,7 +26,7 @@ public class CuentaRepositoryImpl implements CuentaRepository {
             return template.insert(Cuenta.class).using(cuenta);
         }
         return template.update(Query.query(Criteria.where("cuenta_id").is(cuenta.getCuentaId())),
-                        org.springframework.data.relational.core.query.Update.update("numero_cuenta", cuenta.getNumeroCuenta())
+                        update("numero_cuenta", cuenta.getNumeroCuenta())
                                 .set("tipo_cuenta", cuenta.getTipoCuenta())
                                 .set("saldo_inicial", cuenta.getSaldoInicial())
                                 .set("saldo_actual", cuenta.getSaldoActual())

@@ -23,7 +23,6 @@ public class KafkaConsumer {
     public Consumer<ClienteCreatedEvent> clienteCreatedConsumer() {
         return event -> {
             log.info("Received ClienteCreatedEvent: {}", event);
-            // Create a default account for the new client
             Cuenta cuenta = new Cuenta();
             cuenta.setNumeroCuenta("DEFAULT-" + event.getClienteId());
             cuenta.setTipoCuenta("Ahorro");

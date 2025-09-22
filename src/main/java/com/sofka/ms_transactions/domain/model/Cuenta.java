@@ -29,7 +29,7 @@ public class Cuenta {
     private String tipoCuenta;
 
     @NotNull(message = "Saldo inicial is required")
-    @DecimalMin(value = "0.0", inclusive = true, message = "Saldo inicial must be non-negative")
+    @DecimalMin(value = "0.0", message = "Saldo inicial must be non-negative")
     @Column("saldo_inicial")
     private Double saldoInicial;
 
