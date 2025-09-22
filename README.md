@@ -7,8 +7,8 @@ Microservicio reactivo responsable de la gestión de **Cuentas** y **Movimientos
 Para clonar todo el proyecto completo (orquestador + microservicios):
 
 ```bash
-git clone https://github.com/Exloz/reto-arq-ms.git
-cd reto-arq-ms
+git clone --recursive https://github.com/Exloz/reto-sst-orches.git
+cd reto-sst-orches
 # Los microservicios estarán disponibles en ms-transactions/ y ms-users/
 ```
 
