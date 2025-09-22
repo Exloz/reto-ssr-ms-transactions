@@ -1,7 +1,8 @@
 package com.sofka.ms_transactions.presentation.controller;
 
-import com.sofka.ms_transactions.domain.model.Cuenta;
 import com.sofka.ms_transactions.application.usecase.CreateCuentaUseCase;
+import com.sofka.ms_transactions.domain.exception.ResourceNotFoundException;
+import com.sofka.ms_transactions.domain.model.Cuenta;
 import com.sofka.ms_transactions.domain.service.CuentaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -57,7 +58,7 @@ public class CuentaController {
     public Mono<ResponseEntity<Cuenta>> createCuenta(@Valid @RequestBody Cuenta cuenta) {
         return createCuentaUseCase.execute(cuenta)
                 .map(c -> ResponseEntity.status(HttpStatus.CREATED).body(c))
-                 .onErrorResume(e -> Mono.fromCallable(() -> ResponseEntity.<Cuenta>badRequest().build()));
+                .onErrorResume(e -> Mono.just(ResponseEntity.badRequest().build()));
     }
 
     @PutMapping("/{cuentaId}")
@@ -69,7 +70,7 @@ public class CuentaController {
     public Mono<ResponseEntity<Cuenta>> updateCuenta(@PathVariable Long cuentaId, @Valid @RequestBody Cuenta cuenta) {
         return cuentaService.update(cuentaId, cuenta)
                 .map(ResponseEntity::ok)
-                 .onErrorResume(e -> Mono.fromCallable(() -> ResponseEntity.<Cuenta>notFound().build()));
+                .onErrorResume(ResourceNotFoundException.class, e -> Mono.just(ResponseEntity.notFound().build()));
     }
 
     @DeleteMapping("/{cuentaId}")
@@ -79,9 +80,8 @@ public class CuentaController {
             @ApiResponse(responseCode = "404", description = "Cuenta not found")
     })
     public Mono<ResponseEntity<Void>> deleteCuenta(@PathVariable Long cuentaId) {
-        return cuentaService.findById(cuentaId)
-                .flatMap(existing -> cuentaService.delete(cuentaId)
-                        .thenReturn(NO_CONTENT_RESPONSE))
-                .switchIfEmpty(Mono.just(NOT_FOUND_RESPONSE));
+        return cuentaService.delete(cuentaId)
+                .thenReturn(NO_CONTENT_RESPONSE)
+                .onErrorResume(ResourceNotFoundException.class, e -> Mono.just(NOT_FOUND_RESPONSE));
     }
 }

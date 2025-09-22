@@ -32,7 +32,9 @@ public class CuentaControllerTest {
         cuenta.setNumeroCuenta("123456");
         cuenta.setTipoCuenta("Ahorro");
         cuenta.setSaldoInicial(1000.0);
+        cuenta.setSaldoActual(1000.0);
         cuenta.setEstado(true);
+        cuenta.setClienteId(1L);
 
         when(createCuentaUseCase.execute(any(Cuenta.class))).thenReturn(Mono.just(cuenta));
 

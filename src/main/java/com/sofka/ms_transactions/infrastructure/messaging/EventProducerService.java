@@ -16,6 +16,14 @@ public class EventProducerService {
 
     public Mono<Void> sendTransactionCompletedEvent(TransactionCompletedEvent event) {
         log.info("Sending TransactionCompletedEvent: {}", event);
-        return Mono.fromRunnable(() -> streamBridge.send("transactionCompleted-out-0", event));
+        return Mono.fromCallable(() -> {
+                    boolean sent = streamBridge.send("transactionCompleted-out-0", event);
+                    if (!sent) {
+                        log.error("Failed to publish TransactionCompletedEvent for cuentaId={}", event.getCuentaId());
+                        throw new IllegalStateException("Unable to publish TransactionCompletedEvent");
+                    }
+                    return true;
+                })
+                .then();
     }
 }

@@ -1,7 +1,7 @@
 package com.sofka.ms_transactions.application.usecase;
 
-import com.sofka.ms_transactions.domain.model.Movimientos;
 import com.sofka.ms_transactions.domain.service.MovimientosService;
+import com.sofka.ms_transactions.presentation.dto.AccountStatementResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -12,12 +12,12 @@ import java.time.LocalDate;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class GetMovimientosUseCase {
+public class GetAccountStatementUseCase {
 
     private final MovimientosService movimientosService;
 
-    public Flux<Movimientos> execute(Long cuentaId, LocalDate startDate, LocalDate endDate) {
-        log.info("Executing GetMovimientosUseCase for cuentaId: {}", cuentaId);
-        return movimientosService.findByCuentaAndDateRange(cuentaId, startDate, endDate);
+    public Flux<AccountStatementResponse> execute(Long clienteId, LocalDate startDate, LocalDate endDate) {
+        log.info("Executing GetAccountStatementUseCase for clienteId: {}", clienteId);
+        return movimientosService.generateAccountStatement(clienteId, startDate, endDate);
     }
 }

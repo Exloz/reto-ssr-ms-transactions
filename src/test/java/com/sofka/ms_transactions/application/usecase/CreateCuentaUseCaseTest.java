@@ -28,14 +28,16 @@ public class CreateCuentaUseCaseTest {
         cuenta.setNumeroCuenta("123456");
         cuenta.setTipoCuenta("Ahorro");
         cuenta.setSaldoInicial(1000.0);
+        cuenta.setSaldoActual(1000.0);
         cuenta.setEstado(true);
+        cuenta.setClienteId(1L);
 
         when(cuentaService.save(any(Cuenta.class))).thenReturn(Mono.just(cuenta));
 
         Mono<Cuenta> result = createCuentaUseCase.execute(cuenta);
 
         StepVerifier.create(result)
-                .expectNextMatches(c -> "123456".equals(c.getNumeroCuenta()))
+                .expectNextMatches(c -> "123456".equals(c.getNumeroCuenta()) && c.getSaldoActual().equals(1000.0))
                 .verifyComplete();
 
         verify(cuentaService, times(1)).save(cuenta);

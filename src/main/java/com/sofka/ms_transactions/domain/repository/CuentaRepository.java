@@ -9,6 +9,7 @@ public interface CuentaRepository {
     Mono<Cuenta> findById(Long id);
     Mono<Cuenta> findByNumeroCuenta(String numeroCuenta);
     Flux<Cuenta> findByEstado(Boolean estado);
+    Flux<Cuenta> findByClienteId(Long clienteId);
     Flux<Cuenta> findAll();
     Mono<Void> deleteById(Long id);
 }
