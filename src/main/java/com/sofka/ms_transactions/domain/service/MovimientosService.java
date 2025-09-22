@@ -12,6 +12,7 @@ import com.sofka.ms_transactions.presentation.dto.MovementDetailResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -86,6 +87,7 @@ public class MovimientosService {
                         .map(movimientos -> buildAccountStatement(clienteId, cuenta, movimientos)));
     }
 
+    @Transactional
     private Mono<Movimientos> aplicarMovimiento(Cuenta cuenta, Movimientos movimientos, double saldoBase) {
         double nuevoSaldo = saldoBase + movimientos.getValor();
         if (nuevoSaldo < 0) {
