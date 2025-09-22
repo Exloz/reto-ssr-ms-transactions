@@ -4,6 +4,7 @@ import com.sofka.ms_transactions.domain.exception.ResourceNotFoundException;
 import com.sofka.ms_transactions.domain.exception.SaldoNoDisponibleException;
 import com.sofka.ms_transactions.domain.model.Movimientos;
 import com.sofka.ms_transactions.domain.service.MovimientosService;
+import com.sofka.ms_transactions.presentation.dto.CreateMovimientoRequest;
 import com.sofka.ms_transactions.presentation.dto.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,13 @@ public class MovimientosController {
     }
 
     @PostMapping
-    public Mono<ResponseEntity<Object>> createMovimiento(@Valid @RequestBody Movimientos movimientos) {
+    public Mono<ResponseEntity<Object>> createMovimiento(@Valid @RequestBody CreateMovimientoRequest request) {
+        Movimientos movimientos = new Movimientos();
+        movimientos.setFecha(request.getFecha());
+        movimientos.setTipoMovimiento(request.getTipoMovimiento());
+        movimientos.setValor(request.getValor());
+        movimientos.setCuentaId(request.getCuentaId());
+
         return movimientosService.save(movimientos)
                 .map(m -> ResponseEntity.status(HttpStatus.CREATED).body((Object) m))
                 .onErrorResume(SaldoNoDisponibleException.class, e -> Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage()))))

@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Flux;
@@ -40,7 +41,7 @@ class MovimientosIntegrationTest {
     @Autowired
     private WebTestClient webTestClient;
 
-    @MockBean
+    @MockitoBean
     private EventProducerService eventProducerService;
 
     @BeforeEach
@@ -76,7 +77,7 @@ class MovimientosIntegrationTest {
         deposito.setFecha(LocalDate.now());
         deposito.setTipoMovimiento("Deposito");
         deposito.setValor(150.0);
-        deposito.setSaldo(0.0);
+        // El saldo se calcula automáticamente en el servicio
 
         webTestClient.post()
                 .uri("/movimientos")
@@ -105,7 +106,7 @@ class MovimientosIntegrationTest {
         retiro.setFecha(LocalDate.now());
         retiro.setTipoMovimiento("Retiro");
         retiro.setValor(-600.0);
-        retiro.setSaldo(0.0);
+        // El saldo se calcula automáticamente en el servicio
 
         webTestClient.post()
                 .uri("/movimientos")

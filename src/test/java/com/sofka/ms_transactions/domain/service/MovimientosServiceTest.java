@@ -58,7 +58,7 @@ class MovimientosServiceTest {
         retiro.setFecha(LocalDate.now());
         retiro.setTipoMovimiento("Retiro");
         retiro.setValor(-100.0);
-        retiro.setSaldo(0.0);
+        // El saldo se calcula automáticamente en el servicio
 
         when(cuentaService.findById(1L)).thenReturn(Mono.just(cuenta));
 
