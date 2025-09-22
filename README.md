@@ -2,6 +2,18 @@
 
 Microservicio reactivo responsable de la gestión de **Cuentas** y **Movimientos**. Implementa Clean Architecture, usa Spring WebFlux + R2DBC para la capa de datos y se integra con Kafka tanto para consumir eventos de ms-users como para publicar confirmaciones de transacciones.
 
+## 🚀 Clonación desde Orquestación
+
+Para clonar todo el proyecto completo (orquestador + microservicios):
+
+```bash
+git clone https://github.com/Exloz/reto-arq-ms.git
+cd reto-arq-ms
+# Los microservicios estarán disponibles en ms-transactions/ y ms-users/
+```
+
+## Tecnologías Principales
+
 ## Tecnologías Principales
 - Java 21 · Spring Boot 3.5.6 (WebFlux)
 - Spring Data R2DBC · PostgreSQL
